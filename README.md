@@ -1,56 +1,64 @@
+Remote File/Folder Deployment Tool
+===================================
 
-# 🌐 Locale-Send
+Description
+-----------
+This C++ program copies a selected EXE file or folder to remote computers via their IP addresses,
+using Windows Admin Share (C$). It creates a shortcut (.lnk) on the remote desktop
+(C:\Users\Public\Desktop), which allows the copied executable or folder to be launched easily.
 
-**Locale-Send** is a C++ tool designed for sending locale or regional settings between computers or devices, facilitating easy synchronization of locale configurations.
+This version does NOT modify the registry in any way.
 
-## ⚙️ Features
+Features
+--------
+- Automatically retrieves a list of IP addresses from the "arp -a" command
+- Prompts the user to select a file or folder using a native Windows file dialog
+- Determines whether the selected path is a file or a folder
+- Connects to the remote computer's C$ share using default administrative credentials
+- Copies the file or folder to the remote C:\ drive
+- Creates a desktop shortcut (.lnk) on the remote machine
+- Disconnects after each operation
+- English interface and full inline comments for developers
 
-- Send and receive locale settings
-- Supports multiple locales and configurations
-- Simple command-line interface
-- Lightweight and fast
+System Requirements
+-------------------
+- Windows 10 or later
+- Administrator privileges (required for access to C$ shares)
+- Remote PCs must have administrative shares enabled (C$)
+- The same credentials must be valid on the remote systems
 
-## 📁 Project Structure
+Usage Instructions
+------------------
+1. Run the application as Administrator.
+2. Select the file or folder you want to copy.
+3. The program will:
+   - Get the IPs using "arp -a"
+   - Attempt to connect to each IP's C$ share
+   - Copy the selected file/folder to C:\
+   - Create a shortcut on the public desktop
+4. A success or error message will be shown for each attempt.
 
-```
-Locale-Send/
-├── main.cpp           # Main program entry point
-├── LocaleSend.h       # Header file with class declarations
-├── LocaleSend.cpp     # Implementation of locale sending logic
-└── README.md          # This documentation file
-```
+Notes
+-----
+- If the file already exists on the remote system, it will be overwritten.
+- If the desktop shortcut already exists, it will be overwritten.
+- If you are deploying a folder, it will use XCOPY with flags: /E /I /Y
+- Remote computers must be reachable via network and powered on.
 
-## 🚀 Build Instructions
+Developer Notes
+---------------
+This project uses:
+- Windows Shell COM interfaces (IShellLink, IPersistFile)
+- Windows networking functions (WNetAddConnection2W, WNetCancelConnection2W)
+- Standard filesystem and command execution APIs
+- No external libraries or CMake required
 
-1. Ensure you have a C++ compiler (GCC, Clang, MSVC).
-2. Compile the project:
+Security Notice
+---------------
+This tool assumes you have permission to access and deploy files to remote computers.
+Using it without authorization may violate laws or organizational policies.
 
-```bash
-g++ main.cpp LocaleSend.cpp -o LocaleSend -std=c++11
-```
-
-3. Run the executable:
-
-```bash
-./LocaleSend
-```
-
-## 🧪 Usage
-
-Run the program from the command line. It will guide you through sending or receiving locale settings.
-
-## 📦 Dependencies
-
-- Standard C++ libraries
-
-## 📄 License
-
-This project does not currently have a license. You can use it for personal or educational purposes. Contact the author for commercial use.
-
-## 👤 Author
-
-- GitHub: [SigmaGit1eR](https://github.com/SigmaGit1eR)
-
----
-
-Made with 🌐 and C++
+Author
+------
+Created by: SigmaGit1er  
+Language: C++ (Windows API)
